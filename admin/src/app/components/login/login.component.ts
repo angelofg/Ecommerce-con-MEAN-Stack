@@ -35,17 +35,21 @@ export class LoginComponent implements OnInit {
 
   }
 
+
   login(loginForm: any){
     if(loginForm.valid){
       console.log(this.user);
 
+      //captura los datos del formulario
       let data = {
         email: this.user.email,
         password: this.user.password
       }
 
+      //envia los datos al servicio
       this._adminService.login_admin(data).subscribe(
         response=>{
+          //mensaje de error si no hay datos
           if(response.data == undefined){
             iziToast.show({
               title: 'ERROR',
@@ -57,11 +61,14 @@ export class LoginComponent implements OnInit {
             });
 
           }else {
+
+            
             this.usuario = response.data;
 
             localStorage.setItem('token', response.token);
             localStorage.setItem('_id', response.data._id);
 
+            //redirecciona a pagina principal
             this._router.navigate(['/']);
           }
           console.log(response);

@@ -35,17 +35,22 @@ const registro_admin = async function(req,res){
 }
 
 const login_admin = async function(req,res){
+    //captura los datos del body
     var data = req.body;
     var admin_arr = [];
 
+    //busca los datos en el Modelo admin
     admin_arr = await Admin.find({email:data.email});
 
+    //si en el modelo no esta el correo envia mensaje de error
     if(admin_arr.length == 0){
         res.status(200).send({message:'No se encontro el correo', data:undefined});
     }else {
         //LOGIN
+        //captura array del modelo a variable user
         let user = admin_arr[0];
 
+        //si la contraseña del front  coinciden con el back crea el token
         bcrypt.compare(data.password, user.password, async function(error,check){
             if(check){
                 res.status(200).send({
