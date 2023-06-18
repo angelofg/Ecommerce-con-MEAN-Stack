@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GLOBAL } from "./GLOBAL";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AdminService {
 
   public url;
@@ -25,6 +27,36 @@ export class AdminService {
 
   getToken(){
     return localStorage.getItem('token');
+  }
+
+  //validando el token
+  public isAuthenticated(allowRoles: string[]):boolean{
+
+    const token = localStorage.getItem('token');
+
+    //si no hay token devuelve falso
+    if(!token){
+      return false;
+    }
+
+    try{
+      const helper = new JwtHelperService();
+      var decodedToken = helper.decodeToken(token);
+
+      console.log(decodedToken);
+
+      if(!decodedToken){
+        console.log('No Es Valido');
+        localStorage.removeItem('token');
+        return false;
+      }
+
+    }catch (error){
+      localStorage.removeItem('token');
+        return false;
+    }
+
+    return allowRoles.includes(decodedToken['role']);
   }
 
 }
