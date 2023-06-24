@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from 'src/app/services/admin.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 
 @Component({
@@ -14,20 +15,30 @@ export class IndexClienteComponent implements OnInit {
 
   public page = 1;
   public pageSize = 1;
+  public token;
 
-  constructor(private _clienteService: ClienteService) {}
+  constructor(
+    private _clienteService: ClienteService,
+    private _adminService: AdminService
+    ) {
+      this.token = this._adminService.getToken();
+
+    }
 
   ngOnInit(): void{
     this.init_Data();
   }
 
   init_Data(){
-    this._clienteService.listar_clientes_filtro_admin(null,null).subscribe(
+    this._clienteService.listar_clientes_filtro_admin(null,null,this.token).subscribe(
       response=>{
+
         this.clientes = response.data;
+
       },
       error=>{
         console.log(error);
+
       }
     );
   }
@@ -35,7 +46,7 @@ export class IndexClienteComponent implements OnInit {
   filtro(tipo:any){
     if(tipo == 'apellidos'){
       if(this.filtro_apellidos){
-        this._clienteService.listar_clientes_filtro_admin(tipo,this.filtro_apellidos).subscribe(
+        this._clienteService.listar_clientes_filtro_admin(tipo,this.filtro_apellidos,this.token).subscribe(
           response=>{
             this.clientes = response.data;
           },
@@ -48,7 +59,7 @@ export class IndexClienteComponent implements OnInit {
       }
     }else if(tipo == 'correo'){
      if(this.filtro_correo){
-      this._clienteService.listar_clientes_filtro_admin(tipo,this.filtro_correo).subscribe(
+      this._clienteService.listar_clientes_filtro_admin(tipo,this.filtro_correo,this.token).subscribe(
         response=>{
           this.clientes = response.data;
         },
