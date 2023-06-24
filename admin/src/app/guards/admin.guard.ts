@@ -7,13 +7,13 @@ import { AdminService } from "../services/admin.service";
   providedIn: 'root'
 })
 
-export class AdminGuard implements CanActivate {
+export class AdminGuard {
 
   constructor(private _adminService:AdminService, private _router:Router){}
 
 
   canActivate():any{
-  //si no tiene rol admin redicciona al login
+  //si no tiene rol admin redirecciona al login
   if(!this._adminService.isAuthenticated(['admin'])){
     this._router.navigate(['/login']);
     return false;
