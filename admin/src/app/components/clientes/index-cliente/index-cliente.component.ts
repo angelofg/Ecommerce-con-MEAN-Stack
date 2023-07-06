@@ -20,6 +20,7 @@ export class IndexClienteComponent implements OnInit {
   public page = 1;
   public pageSize = 20;
   public token;
+  public load_data = true;
 
   constructor(
     private _clienteService: ClienteService,
@@ -36,8 +37,13 @@ export class IndexClienteComponent implements OnInit {
   init_Data(){
     this._clienteService.listar_clientes_filtro_admin(null,null,this.token).subscribe(
       response=>{
-
+        //cargar lista de clientes
         this.clientes = response.data;
+
+        //setTimeout(()=>{
+          this.load_data = false;
+        //}, 3000)
+
 
       },
       error=>{
@@ -48,11 +54,16 @@ export class IndexClienteComponent implements OnInit {
   }
 
   filtro(tipo:any){
+    //filtra lista de clientes por apellidos
     if(tipo == 'apellidos'){
+      this.load_data = true;
       if(this.filtro_apellidos){
         this._clienteService.listar_clientes_filtro_admin(tipo,this.filtro_apellidos,this.token).subscribe(
           response=>{
             this.clientes = response.data;
+            //setTimeout(()=>{
+            this.load_data = false;
+            //}, 3000)
           },
           error=>{
             console.log(error);
@@ -61,11 +72,16 @@ export class IndexClienteComponent implements OnInit {
       }else{
         this.init_Data();
       }
+    //filtra lista de clientes por correo
     }else if(tipo == 'correo'){
      if(this.filtro_correo){
+      this.load_data = true;
       this._clienteService.listar_clientes_filtro_admin(tipo,this.filtro_correo,this.token).subscribe(
         response=>{
           this.clientes = response.data;
+          //setTimeout(()=>{
+          this.load_data = false;
+          //}, 3000)
         },
         error=>{
           console.log(error);
