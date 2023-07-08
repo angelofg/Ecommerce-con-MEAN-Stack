@@ -25,6 +25,7 @@ export class ProductoService {
     fd.append('precio',data.precio);
     fd.append('descripcion',data.descripcion);
     fd.append('contenido',data.contenido);
+    fd.append('categoria',data.categoria);
     fd.append('portada',file);
 
     return this._http.post(this.url+'registro_producto_admin',fd,{headers:headers});
