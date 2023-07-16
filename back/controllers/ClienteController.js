@@ -45,7 +45,7 @@ const login_cliente = async function(req,res){
         res.status(200).send({message:'No se encontro el correo', data:undefined});
     }else {
         //LOGIN
-        let user = cliente_arr[0];
+      let user = cliente_arr[0];
 
         bcrypt.compare(data.password, user.password, async function(error,check){
             if(check){

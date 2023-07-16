@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 
           }else {
 
-            
+
             this.usuario = response.data;
 
             localStorage.setItem('token', response.token);
