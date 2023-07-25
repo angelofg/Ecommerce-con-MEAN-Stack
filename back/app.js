@@ -7,6 +7,7 @@ const bodyparser = require('body-parser');
 const cliente_route = require('./routes/cliente');
 const admin_route = require('./routes/admin');
 const producto_route = require('./routes/producto');
+const cupon_route = require('./routes/cupon');
 
 const app = express();
 require('./database');
@@ -27,6 +28,8 @@ app.use((req,res,next)=>{
 app.use('/api',cliente_route);
 app.use('/api',admin_route);
 app.use('/api',producto_route);
+app.use('/api',cupon_route);
+
 
 app.listen(app.get('port'), () =>{
     console.log('Server on port', app.get('port'));
