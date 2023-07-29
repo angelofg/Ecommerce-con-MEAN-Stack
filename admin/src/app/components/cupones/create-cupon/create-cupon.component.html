@@ -45,13 +45,13 @@
 
     </div>
     <div class="card-footer">
-      <button *ngIf="!load_btn" class="btn btn-primary mr-3" type="submit">Crear cupon</button>
+      <button *ngIf="!load_btn" class="btn btn-primary mr-3" type="submit">Crear cupón</button>
       <!-- Button with growing spinner and text -->
       <button *ngIf="load_btn" type="button" class="btn btn-secondary" disabled>
         <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
         Creando...
       </button>
-      <a [routerLink]="['/panel/clientes']" class="btn btn-warning">Regresar</a>
+      <a [routerLink]="['/panel/cupones']" class="btn btn-warning">Regresar</a>
     </div>
 
   </div>
