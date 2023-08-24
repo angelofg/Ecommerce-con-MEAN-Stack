@@ -8,6 +8,7 @@ const cliente_route = require('./routes/cliente');
 const admin_route = require('./routes/admin');
 const producto_route = require('./routes/producto');
 const cupon_route = require('./routes/cupon');
+const config_route = require('./routes/config');
 
 const app = express();
 require('./database');
@@ -29,6 +30,7 @@ app.use('/api',cliente_route);
 app.use('/api',admin_route);
 app.use('/api',producto_route);
 app.use('/api',cupon_route);
+app.use('/api',config_route);
 
 
 app.listen(app.get('port'), () =>{
