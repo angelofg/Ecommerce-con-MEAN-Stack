@@ -250,13 +250,6 @@ const registro_inventario_producto_admin = async function(req,res){
     }
 }
 
-const listar_productos_publico = async function(req,res){
-    var filtro = req.params['filtro'];
-
-    let reg = await Producto.find({titulo: new RegExp(filtro, 'i')});
-    res.status(200).send({data: reg});
-}
-
 const actualizar_producto_variedades_admin = async function(req,res){
     if(req.user){
         if(req.user.role == 'admin'){
@@ -279,6 +272,60 @@ const actualizar_producto_variedades_admin = async function(req,res){
 
 }
 
+const agregar_imagen_galeria_admin = async function(req,res){
+    if(req.user){
+        if(req.user.role == 'admin'){
+            let id = req.params['id'];
+            let data = req.body;
+
+            var img_path = req.files.imagen.path;
+            var name = img_path.split('\\');
+            var imagen_name = name[2];
+
+            let reg = await Producto.findByIdAndUpdate({_id:id},{ $push: {galeria:{
+                imagen: imagen_name,
+                _id: data._id
+            }}});
+
+            res.status(200).send({data:reg});
+
+        }else{
+            res.status(500).send({message: 'NoAccess'});
+        }
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+
+}
+
+const eliminar_imagen_galeria_admin = async function(req,res){
+    if(req.user){
+        if(req.user.role == 'admin'){
+            let id = req.params['id'];
+            let data = req.body;
+
+
+            let reg = await Producto.findByIdAndUpdate({_id:id},{$pull: {galeria: {_id:data._id}}});
+            res.status(200).send({data:reg});
+
+        }else{
+            res.status(500).send({message: 'NoAccess'});
+        }
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+
+}
+
+//---METODOS PUBLICOS-------------------------------------------------------
+
+const listar_productos_publico = async function(req,res){
+    var filtro = req.params['filtro'];
+
+    let reg = await Producto.find({titulo: new RegExp(filtro, 'i')});
+    res.status(200).send({data: reg});
+}
+
 module.exports = {
     registro_producto_admin,
     listar_productos_admin,
@@ -290,5 +337,8 @@ module.exports = {
     eliminar_inventario_producto_admin,
     registro_inventario_producto_admin,
     listar_productos_publico,
-    actualizar_producto_variedades_admin
+    actualizar_producto_variedades_admin,
+    agregar_imagen_galeria_admin,
+    eliminar_imagen_galeria_admin
+    
 }
