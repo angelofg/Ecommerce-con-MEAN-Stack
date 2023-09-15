@@ -6,7 +6,7 @@ const obtener_config_admin = async function(req,res){
     if(req.user){
         if(req.user.role == 'admin'){
 
-           let reg = await Config.findById({_id:"64e13a5ee5be3983e0c6bd47"});
+           let reg = await Config.findById({_id:"6503b14057115274202f7494"});
            res.status(200).send({data:reg}); 
 
         }else{
@@ -17,6 +17,28 @@ const obtener_config_admin = async function(req,res){
         res.status(500).send({message: 'NoAccess'});
     }
 }
+
+/*const actualiza_config_admin = async function(req, res){
+    if(req.user){
+        if(req.user.role == 'admin'){
+
+        await Config.create({
+            categorias: [],
+            titulo: 'Createx',
+            logo: 'logo.png',
+            serie: "0001",
+            correlativo: "000001",
+        });  
+
+        }else{
+            res.status(500).send({message: 'NoAccess'});
+        }
+    }else{
+        
+        res.status(500).send({message: 'NoAccess'});
+    }
+
+}*/
 
 const actualiza_config_admin = async function(req, res){
     if(req.user){
@@ -30,7 +52,7 @@ const actualiza_config_admin = async function(req, res){
                 var name = img_path.split('\\');
                 var logo_name = name[2];
 
-                let reg = await Config.findByIdAndUpdate({_id:"64e13a5ee5be3983e0c6bd47"},{
+                let reg = await Config.findByIdAndUpdate({_id:"6503b14057115274202f7494"},{
                     categorias: JSON.parse(data.categorias),
                     titulo: data.titulo,
                     serie: data.serie,
@@ -49,7 +71,7 @@ const actualiza_config_admin = async function(req, res){
 
             }else{
                 console.log('No hay img');
-                let reg = await Config.findByIdAndUpdate({_id:"64e13a5ee5be3983e0c6bd47"},{
+                let reg = await Config.findByIdAndUpdate({_id:"6503b14057115274202f7494"},{
                     categorias: data.categorias,
                     titulo: data.titulo,
                     serie: data.serie,
@@ -57,16 +79,6 @@ const actualiza_config_admin = async function(req, res){
                 });
                 res.status(200).send({data:reg});
             }
-
-        /*await Config.create({
-            categorias: [],
-            titulo: 'Createx',
-            logo: 'logo.png',
-            serie: "0001",
-            correlativo: "000001",
-        });*/    
-
-            
 
         }else{
             res.status(500).send({message: 'NoAccess'});
@@ -95,7 +107,7 @@ const obtener_logo = async function(req,res){
 }
 
 const obtener_config_publico = async function(req,res){
-    let reg = await Config.findById({_id:"64e13a5ee5be3983e0c6bd47"});
+    let reg = await Config.findById({_id:"6503b14057115274202f7494"});
     res.status(200).send({data:reg}); 
 }
 
