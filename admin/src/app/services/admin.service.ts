@@ -45,6 +45,11 @@ export class AdminService {
 
       console.log(decodedToken);
 
+      if(helper.isTokenExpired(token)){
+        localStorage.clear();
+        return false;
+      }
+
       if(!decodedToken){
         console.log('No Es Valido');
         localStorage.removeItem('token');
