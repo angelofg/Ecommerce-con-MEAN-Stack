@@ -82,7 +82,7 @@ export class ConfigComponent implements OnInit {
 
       console.log(data);
 
-      this._adminService.actualiza_config_admin("6503b14057115274202f7494",data,this.token).subscribe(
+      this._adminService.actualiza_config_admin("64e13a5ee5be3983e0c6bd47",data,this.token).subscribe(
         response=>{
           iziToast.show({
             title: 'SUCCESS',

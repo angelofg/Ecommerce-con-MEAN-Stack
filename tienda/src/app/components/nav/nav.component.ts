@@ -12,7 +12,8 @@ export class NavComponent implements OnInit {
   public token : any;
   public id : any;
   public user : any = undefined;
-  public user_lc : any = {};
+  public user_lc : any = undefined;
+  public config_global : any = {};
 
   constructor(
     private _clienteService: ClienteService,
@@ -20,6 +21,13 @@ export class NavComponent implements OnInit {
   ){
     this.token = localStorage.getItem('token');
     this.id = localStorage.getItem('_id');
+
+    this._clienteService.obtener_config_publico().subscribe(
+      response=>{
+        this.config_global = response.data;
+
+      }
+    )
 
     if(this.token){
       this._clienteService.obtener_cliente_guest(this.id,this.token).subscribe(
@@ -32,10 +40,8 @@ export class NavComponent implements OnInit {
           }else{
             this.user_lc = undefined;
           }
-
         },
         error=>{
-          console.log(error);
           this.user = undefined;
         }
       );
