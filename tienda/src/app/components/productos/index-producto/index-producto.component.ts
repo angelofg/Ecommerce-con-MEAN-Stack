@@ -31,8 +31,9 @@ export class IndexProductoComponent  implements OnInit{
     this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
       response=>{
         this.productos = response.data;
-        this.load_data = false;
-
+        //setTimeout(()=>{
+          this.load_data = false;
+        //},3000);
       }
     );
 
