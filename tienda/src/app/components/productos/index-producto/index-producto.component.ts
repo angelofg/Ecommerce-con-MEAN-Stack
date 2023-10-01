@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 declare var noUiSlider : any ;
@@ -11,16 +12,19 @@ declare var $ : any;
 })
 export class IndexProductoComponent  implements OnInit{
 
-  public config_global : any = {};
+  public config_global :any = {};
   public filter_categoria = '';
-  public productos : Array<any> = [];
+  public productos :Array<any> = [];
   public filter_producto = '';
   public filter_cat_productos = 'todos';
-  public url:any;
+  public url :any;
   public load_data = true;
 
+  public route_categoria :any;
+
   constructor(
-    private _clienteService: ClienteService
+    private _clienteService: ClienteService,
+    private _route: ActivatedRoute
   ){
     this.url = GLOBAL.url;
     this._clienteService.obtener_config_publico().subscribe(
@@ -29,12 +33,28 @@ export class IndexProductoComponent  implements OnInit{
       }
     )
 
-    this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
-      response=>{
-        this.productos = response.data;
-        //setTimeout(()=>{
-          this.load_data = false;
-        //},3000);
+    this._route.params.subscribe(
+      params=>{
+        this.route_categoria = params['categoria'];
+
+        if(this.route_categoria){
+          this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+            response=>{
+              this.productos = response.data;
+              this.productos = this.productos.filter(item=>item.categoria.toLowerCase()==this.route_categoria);
+              this.load_data = false;
+            }
+          );
+        }else{
+          this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+            response=>{
+
+              this.productos = response.data;
+              this.load_data = false;
+            }
+          );
+        }
+
       }
     );
 
@@ -131,6 +151,7 @@ export class IndexProductoComponent  implements OnInit{
         response=>{
           this.productos = response.data;
           this.productos = this.productos.filter(item=>item.categoria==this.filter_cat_productos);
+          this.load_data = false;
         }
       );
 
