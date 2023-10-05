@@ -38,7 +38,7 @@ export class IndexProductoComponent  implements OnInit{
         this.route_categoria = params['categoria'];
 
         if(this.route_categoria){
-          this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+          this._clienteService.listar_productos_publico('').subscribe(
             response=>{
               this.productos = response.data;
               this.productos = this.productos.filter(item=>item.categoria.toLowerCase()==this.route_categoria);
@@ -46,7 +46,7 @@ export class IndexProductoComponent  implements OnInit{
             }
           );
         }else{
-          this._clienteService.listar_productos_publico(this.filter_producto).subscribe(
+          this._clienteService.listar_productos_publico('').subscribe(
             response=>{
 
               this.productos = response.data;
@@ -158,5 +158,15 @@ export class IndexProductoComponent  implements OnInit{
 
     }
 
+  }
+
+  reset_productos(){
+    this.filter_producto = '';
+    this._clienteService.listar_productos_publico('').subscribe(
+      response=>{
+        this.productos = response.data;
+        this.load_data = false;
+      }
+    );
   }
 }
