@@ -22,7 +22,7 @@ export class IndexProductoComponent  implements OnInit{
 
   public route_categoria :any;
   public page = 1;
-  public pageSize = 15;
+  public pageSize = 3;
 
   constructor(
     private _clienteService: ClienteService,
