@@ -21,6 +21,8 @@ export class IndexProductoComponent  implements OnInit{
   public load_data = true;
 
   public route_categoria :any;
+  public page = 1;
+  public pageSize = 15;
 
   constructor(
     private _clienteService: ClienteService,
