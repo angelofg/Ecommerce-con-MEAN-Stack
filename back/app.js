@@ -9,6 +9,7 @@ const admin_route = require('./routes/admin');
 const producto_route = require('./routes/producto');
 const cupon_route = require('./routes/cupon');
 const config_route = require('./routes/config');
+const carrito_route = require('./routes/carrito');
 
 const app = express();
 require('./database');
@@ -31,6 +32,7 @@ app.use('/api',admin_route);
 app.use('/api',producto_route);
 app.use('/api',cupon_route);
 app.use('/api',config_route);
+app.use('/api',carrito_route);
 
 
 app.listen(app.get('port'), () =>{
