@@ -4,6 +4,7 @@ import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 declare var noUiSlider : any ;
 declare var $ : any;
+import { io } from "socket.io-client";
 declare var iziToast : any;
 
 @Component({
@@ -33,6 +34,8 @@ export class IndexProductoComponent  implements OnInit{
   };
   public btn_cart = false;
   public token : any;
+
+  public socket = io('http://localhost:4201');
 
   constructor(
     private _clienteService: ClienteService,
@@ -275,6 +278,8 @@ export class IndexProductoComponent  implements OnInit{
             position: 'topRight',
             message: 'Se agregó el producto al carrito'
           });
+
+          this.socket.emit('add-carrito-add',{data:true});
           this.btn_cart = false;
         }
       }

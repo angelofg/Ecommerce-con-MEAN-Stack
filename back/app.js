@@ -1,18 +1,39 @@
 'use strict'
 
-const express = require('express');
-const bodyparser = require('body-parser');
+var express = require('express');
+var app = express();
+var bodyparser = require('body-parser');
+
+require('./database');
+
+//Socket-IO
+var server = require('http').createServer(app);
+var io = require('socket.io')(server,{
+    cors: {origin : '*'}
+});
+
+io.on('connection',function(socket){
+    socket.on('delete-carrito',function(data){
+        io.emit('new-carrito',data);
+        console.log(data);
+    });
+
+    socket.on('add-carrito-add',function(data){
+        io.emit('new-carrito-add',data);
+        console.log(data);
+    });
+
+});
 
 //Rutas
-const cliente_route = require('./routes/cliente');
-const admin_route = require('./routes/admin');
-const producto_route = require('./routes/producto');
-const cupon_route = require('./routes/cupon');
-const config_route = require('./routes/config');
-const carrito_route = require('./routes/carrito');
+var cliente_route = require('./routes/cliente');
+var admin_route = require('./routes/admin');
+var producto_route = require('./routes/producto');
+var cupon_route = require('./routes/cupon');
+var config_route = require('./routes/config');
+var carrito_route = require('./routes/carrito');
 
-const app = express();
-require('./database');
+
 
 app.set('port', process.env.PORT || 4201);
 
@@ -35,7 +56,7 @@ app.use('/api',config_route);
 app.use('/api',carrito_route);
 
 
-app.listen(app.get('port'), () =>{
+server.listen(app.get('port'), () =>{
     console.log('Server on port', app.get('port'));
 });
 
