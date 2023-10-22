@@ -3,7 +3,9 @@
 var Cliente = require('../models/cliente');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt');
-const cliente = require('../models/cliente');
+//const cliente = require('../models/cliente');
+
+var Direccion = require('../models/direccion');
 
 const registro_cliente = async function(req,res){
     //
@@ -210,10 +212,10 @@ const actualizar_perfil_cliente_guest = async function(req,res){
     var id = req.params['id'];
     var data = req.body;     
     
-    console.log(data.password);
+    //console.log(data.password);
 
     if(data.password){
-      console.log('Con contraseña');
+      //console.log('Con contraseña');
       bcrypt.hash(data.password,null,null, async function(err,hash){
         var reg = await Cliente.findByIdAndUpdate({_id:id},{
           nombres: data.nombres,
@@ -229,7 +231,7 @@ const actualizar_perfil_cliente_guest = async function(req,res){
       });
       
     }else{
-      console.log('Sin contraseña');
+      //console.log('Sin contraseña');
       var reg = await Cliente.findByIdAndUpdate({_id:id},{
         nombres: data.nombres,
         apellidos: data.apellidos,
@@ -247,6 +249,17 @@ const actualizar_perfil_cliente_guest = async function(req,res){
   }
 }
 
+//DIRECCIONES
+const registro_direccion_cliente = async function(req,res){
+    if(req.user){
+        var data = req.body; 
+        let reg = await Direccion.create(data);
+        res.status(200).send({data:reg}); 
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
 module.exports = {
     registro_cliente,
     login_cliente,
@@ -256,5 +269,6 @@ module.exports = {
     actualizar_cliente_admin,
     eliminar_cliente_admin,
     obtener_cliente_guest,
-    actualizar_perfil_cliente_guest
+    actualizar_perfil_cliente_guest,
+    registro_direccion_cliente
 }

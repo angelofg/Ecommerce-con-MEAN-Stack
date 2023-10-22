@@ -261,7 +261,7 @@ const actualizar_producto_variedades_admin = async function(req,res){
                 variedades: data.variedades
 
             });
-            res.status(200).send({data:reg});
+            res.status(200).send({data:reg});   
 
         }else{
             res.status(500).send({message: 'NoAccess'});
