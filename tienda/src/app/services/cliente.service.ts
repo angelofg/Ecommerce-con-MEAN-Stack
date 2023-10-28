@@ -43,7 +43,7 @@ export class ClienteService {
       const helper = new JwtHelperService();
       var decodedToken = helper.decodeToken(token);
 
-      console.log(decodedToken);
+      //console.log(decodedToken);
 
       if(helper.isTokenExpired(token)){
         localStorage.clear();
@@ -91,6 +91,11 @@ export class ClienteService {
   registro_direccion_cliente(data:any,token:any):Observable<any>{
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
     return this._http.post(this.url+'registro_direccion_cliente/',data,{headers:headers});
+  }
+
+  obtener_direccion_todos_cliente(id:any,token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url+'obtener_direccion_todos_cliente/'+id,{headers:headers});
   }
 
 }
