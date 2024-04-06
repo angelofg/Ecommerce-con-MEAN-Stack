@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ConfigSchema = Schema({
-    categorias : [{type: Object, required: true}],
+    categorias : [{type: Object, required: false}],
     titulo : {type: String, required: true},
     logo : {type: String, required: true},
     serie : {type: String, required: true},
