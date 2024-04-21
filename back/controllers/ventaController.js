@@ -1,5 +1,6 @@
 var Venta = require('../models/venta');
 var Dventa = require('../models/dventa');
+var Producto = require('../models/producto');
 
 const registro_compra_cliente = async function(req,res){
     if(req.user){
@@ -36,14 +37,22 @@ const registro_compra_cliente = async function(req,res){
 
         console.log(data);
 
-        // let venta = await Venta.create(data);
+        let venta = await Venta.create(data);
        
-        // detalles.forEach(async(element) => {
-        //     element.venta = venta._id;
-        //     await Dventa.create(element);
-        // });
+        detalles.forEach(async(element) => {
+            element.venta = venta._id;
+            await Dventa.create(element);
+
+            let element_producto = await Producto.findById({_id:element.producto});
+            let new_stock = element_producto.stock - element.cantidad;
+
+            await Producto.findByIdAndUpdate({_id: element.producto},{
+                stock: new_stock
+            });
+
+        });
         
-        // res.status(200).send({venta:venta});
+        res.status(200).send({venta:venta});
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
