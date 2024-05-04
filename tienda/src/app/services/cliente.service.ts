@@ -113,4 +113,20 @@ export class ClienteService {
     return this._http.post(this.url+'registro_compra_cliente/',data,{headers:headers});
   }
 
+
+//Pasarela de Pago
+  get_token_culqi(data:any):Observable<any>{
+    let headers = new HttpHeaders()
+    .set('Content-Type','application/json')
+    .set('Authorization','Bearer pk_test_0b07aceaa3de8c43'); //API Keys llave publica
+    return this._http.post('https://secure.culqi.com/v2/tokens',data,{headers:headers});
+  }
+
+  get_charge_culqi(data:any):Observable<any>{
+    let headers = new HttpHeaders()
+    .set('Content-Type','application/json')
+    .set('Authorization','Bearer sk_test_56683314fd8a5328'); //API Keys llave privada
+    return this._http.post('https://api.culqi.com/v2/charges',data,{headers:headers});
+  }
+
 }
