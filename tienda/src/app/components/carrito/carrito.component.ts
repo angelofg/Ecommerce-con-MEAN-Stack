@@ -3,6 +3,7 @@ import { GLOBAL } from 'src/app/services/GLOBAL';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { io } from "socket.io-client";
 import { GuestService } from 'src/app/services/guest.service';
+import { Router } from '@angular/router';
 declare var iziToast:any;
 declare var Cleave:any;
 declare var StickySidebar:any;
@@ -24,7 +25,7 @@ export class CarritoComponent implements OnInit {
   public token:any;
 
   public carrito_arr : Array<any> = [];
-  public url : any;
+  public url;
   public subtotal = 0;
   public total_pagar : any = 0;
 
@@ -42,10 +43,13 @@ export class CarritoComponent implements OnInit {
   public carrito_load = true;
 
   public user : any = {};
+  public descuento = 0;
+  public error_cupon = '';
 
   constructor(
     private _clienteService: ClienteService,
-    private _guestService: GuestService
+    private _guestService: GuestService,
+    private _router:Router
   ){
 
     this.idcliente = localStorage.getItem('_id');
@@ -92,10 +96,10 @@ export class CarritoComponent implements OnInit {
 
           return actions.order.create({
             purchase_units : [{
-              description : 'Nombre del pago',
+              description : 'Pago en Mi Tienda',
               amount : {
                 currency_code : 'USD',
-                value: 999
+                value: this.subtotal
               },
             }]
           });
@@ -110,7 +114,12 @@ export class CarritoComponent implements OnInit {
         this.venta.detalles = this.dventa;
         this._clienteService.registro_compra_cliente(this.venta,this.token).subscribe(
           response=>{
-            console.log(response);
+
+            this._clienteService.enviar_correo_compra_cliente(response.venta._id,this.token).subscribe(
+              response=> {
+                this._router.navigate(['/']);
+              }
+            );
 
           }
         );
@@ -141,9 +150,7 @@ export class CarritoComponent implements OnInit {
           });
         });
 
-        setTimeout(()=> {
-          this.carrito_load = false;
-        },3000);
+        this.carrito_load = false;
 
         this.calcular_carrito();
         this.calcular_total('Envio Gratis');
@@ -233,14 +240,65 @@ export class CarritoComponent implements OnInit {
         }
         this._clienteService.get_charge_culqi(charge).subscribe(
           response=>{
-            this.btn_load = false;
-            console.log(response);
+            this.venta.transaccion = response.id;
+
+            this.venta.detalles = this.dventa;
+            this._clienteService.registro_compra_cliente(this.venta,this.token).subscribe(
+              response=>{
+                this.btn_load = false;
+
+                this._clienteService.enviar_correo_compra_cliente(response.venta._id,this.token).subscribe(
+                  response=> {
+                    this._router.navigate(['/']);
+                  }
+                );
+
+
+              }
+            );
+
+
           }
         );
 
       }
     );
 
+  }
+
+
+  validar_cupon(){
+   if(this.venta.cupon){
+    if(this.venta.cupon.toString().length <= 25){
+      //Si es valido
+
+      this._clienteService.validar_cupon_cliente(this.venta.cupon,this.token).subscribe(
+        response=>{
+          if(response.data != undefined){
+            this.error_cupon = '';
+
+            if(response.data.tipo == 'valor fijo'){
+              this.descuento = response.data.valor;
+              this.total_pagar = this.total_pagar - this.descuento;
+            }else if(response.data.tipo == 'Porcentaje'){
+              this.descuento = (this.total_pagar * response.data.valor)/100;
+              this.total_pagar = this.total_pagar - this.descuento;
+            }
+
+          }else{
+            this.error_cupon = 'El cupon no se pudo canjear';
+          }
+
+          console.log(response);
+        }
+      );
+    }else{
+      //No es valido
+      this.error_cupon = 'El cupon debe ser menos de 25 caracteres';
+    }
+   }else{
+    this.error_cupon = 'El cupon no es valido';
+   }
   }
 
 }
