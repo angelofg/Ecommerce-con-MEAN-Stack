@@ -1,4 +1,6 @@
 var Descuento = require('../models/descuento');
+var fs = require('fs');
+var path = require('path');
 
 const registro_descuento_admin = async function(req,res){
     if(req.user){
