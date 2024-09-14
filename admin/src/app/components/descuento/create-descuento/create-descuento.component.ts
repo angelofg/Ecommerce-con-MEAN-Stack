@@ -42,11 +42,9 @@ export class CreateDescuentoComponent implements OnInit {
         });
 
       }else{
-        console.log(this.descuento);
-        console.log(this.file);
-
-        this.load_btn = true; //habilitar preload
-        this._descuentoService.registro_descuento_admin(this.descuento,this.file,this.token).subscribe(
+        if(this.descuento.descuento >= 1 && this.descuento.descuento <= 100){
+          this.load_btn = true; //habilitar preload
+          this._descuentoService.registro_descuento_admin(this.descuento,this.file,this.token).subscribe(
           response=>{
             iziToast.show({
               title: 'SUCCESS',
@@ -63,6 +61,18 @@ export class CreateDescuentoComponent implements OnInit {
             this.load_btn = false;
           }
         );
+        }else{
+          iziToast.show({
+            title: 'ERROR',
+            titleColor: '#FF0000',
+            color: '#FFF',
+            class: 'text-danger',
+            position: 'topRight',
+            message: 'El descuento debe ser entre 0% a 100%'
+          });
+          this.load_btn = false;
+        }
+
       }
 
     }else{

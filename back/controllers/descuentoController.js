@@ -32,7 +32,7 @@ const listar_descuentos_admin = async function(req,res){
            
             var filtro = req.params['filtro'];
 
-            let reg = await Descuento.find({titulo: new RegExp(filtro, 'i')});
+            let reg = await Descuento.find({titulo: new RegExp(filtro, 'i')}).sort({createAt: -1});
 
             res.status(200).send({data:reg});
 

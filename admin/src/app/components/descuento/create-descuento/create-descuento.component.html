@@ -26,12 +26,12 @@
 
                   <div class="col-lg-6 form-group">
                     <label for="">Fecha inicio</label>
-                    <input type="date" class="form-control" required name="descuento" [(ngModel)]="descuento.fecha_inicio">
+                    <input type="date" class="form-control" required name="fecha_inicio" [(ngModel)]="descuento.fecha_inicio">
                   </div>
 
                   <div class="col-lg-6 form-group">
                     <label for="">Fecha fin</label>
-                    <input type="date" class="form-control" required name="descuento" [(ngModel)]="descuento.fecha_fin">
+                    <input type="date" class="form-control" required name="fecha_fin" [(ngModel)]="descuento.fecha_fin">
                   </div>
 
                   <div class="col-lg-6 form-group">
@@ -65,7 +65,7 @@
           <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
           Creando...
         </button>
-        <a class="btn btn-warning" [routerLink]="['/panel/productos']" routerLinkActive="router-link-active">Regresar</a>
+        <a class="btn btn-warning" [routerLink]="['/panel/descuentos']" routerLinkActive="router-link-active">Regresar</a>
     </div>
 </div>
 </form>
