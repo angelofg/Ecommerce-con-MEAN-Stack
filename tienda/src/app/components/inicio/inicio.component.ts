@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClienteService } from 'src/app/services/cliente.service';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { GuestService } from 'src/app/services/guest.service';
 declare var tns: any;
@@ -12,11 +13,42 @@ export class InicioComponent implements OnInit {
 
   public descuento_activo : any = undefined;
   public url: any;
+  public new_productos : Array<any> = [];
+  public mas_vendidos : Array<any> = [];
+
+  public categorias : Array<any> = [];
 
   constructor(
-    private _guestService:GuestService
+    private _guestService:GuestService,
+    private _clienteService: ClienteService,
   ){
     this.url = GLOBAL.url;
+    this._clienteService.obtener_config_publico().subscribe(
+      response=>{
+        response.data.categorias.forEach((element:any) => {
+          if(element.titulo == 'celulares'){
+            this.categorias.push({
+              titulo:element.titulo,
+              portada: 'assets/img/ecommerce/home/categories/04.jpg'
+            });
+          }else if(element.titulo == 'headset'){
+            this.categorias.push({
+              titulo:element.titulo,
+              portada: 'assets/img/ecommerce/home/categories/05.jpg'
+            });
+          }else if(element.titulo == 'ropa'){
+            this.categorias.push({
+              titulo:element.titulo,
+              portada: 'assets/img/ecommerce/home/categories/06.jpg'
+            });
+          }
+        });
+
+        console.log(this.categorias);
+
+
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -30,6 +62,18 @@ export class InicioComponent implements OnInit {
           this.descuento_activo = undefined;
         }
 
+      }
+    );
+
+    this._guestService.listar_productos_nuevos_publico().subscribe(
+      response=> {
+        this.new_productos = response.data;
+      }
+    );
+
+    this._guestService.listar_productos_masvendidos_publico().subscribe(
+      response=> {
+        this.mas_vendidos = response.data;
       }
     );
 

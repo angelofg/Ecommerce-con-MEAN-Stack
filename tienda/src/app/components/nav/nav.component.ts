@@ -39,7 +39,6 @@ export class NavComponent implements OnInit {
     this._clienteService.obtener_config_publico().subscribe(
       response=>{
         this.config_global = response.data;
-
       }
     )
 
