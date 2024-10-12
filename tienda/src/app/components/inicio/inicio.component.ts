@@ -44,7 +44,7 @@ export class InicioComponent implements OnInit {
           }
         });
 
-        console.log(this.categorias);
+        // console.log(this.categorias);
 
 
       }
