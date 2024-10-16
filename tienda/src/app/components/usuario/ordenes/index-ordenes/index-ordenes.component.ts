@@ -31,8 +31,9 @@ export class IndexOrdenesComponent implements OnInit {
     this._clienteService.obtener_ordenes_cliente(localStorage.getItem('_id'),this.token).subscribe(
       response=>{
         this.ordenes = response.data;
-        // console.log(response);
+
         this.load_data = false;
+
       }
     );
   }

@@ -121,7 +121,7 @@ export class CarritoComponent implements OnInit {
       },
       onApprove : async (data:any,actions:any)=>{
         const order = await actions.order.capture();
-        console.log(order);
+        // console.log(order);
 
         this.venta.transaccion = order.purchase_units[0].payments.captures[0].id;
 
@@ -309,7 +309,7 @@ export class CarritoComponent implements OnInit {
             this.error_cupon = 'El cupon no se pudo canjear';
           }
 
-          console.log(response);
+          // console.log(response);
         }
       );
     }else{
